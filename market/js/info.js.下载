@@ -1,0 +1,57 @@
+
+$(document).ready(function(){
+    //点击编辑，再点击保存
+    $("#edit_info").click(function(){
+        $(this).css({
+            display: "none"
+        })
+        $("#save_info").css({
+            display: "block"
+        })
+        $(".right_info span").css({
+            display: "none"
+        })
+        $(".right_info input").css({
+            display: "inline"
+        })
+    });
+
+    $("#save_info").bind('click',function(){
+        $.ajax({
+            url: '/home/user/editinfo',
+            dataType: "json",
+            async: true,
+            data: {
+                'qianming': $('#qianming').val(),
+                 'mobile' : $("#phone").val(),
+                 'email' : $("#qq").val(),
+            },    //参数值
+            type: "POST",   //请求方式
+            success: function(data) {
+                //请求成功时处理
+                if(data.status == 1){
+                    layer.msg('修改成功');
+                    $("#save_info").css({
+                        display: "none"
+                    });
+                    $("#edit_info").css({
+                        display: "block"
+                    });
+                    $("#qq_span").text($("#qq").val()),
+                    $("#phone_span").text($("#phone").val()),
+                    $("#qianming_span").text($('#qianming').val()),
+                    $(".user_qianming").text($('#qianming').val()),
+                    $(".right_info input").css({
+                        display: "none"
+                    });
+                    $(".right_info span").css({
+                        display: "inline"
+                    });
+                }
+                else{
+                    layer.msg('修改失败，请重试！');
+                }
+            },
+        });
+    });
+})
